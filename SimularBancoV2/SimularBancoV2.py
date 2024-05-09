@@ -51,6 +51,27 @@ def extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_
     print(f"Saques realizados hoje: {numero_de_saques_do_dia} | Saques restantes: {LIMITE_DE_SAQUE - numero_de_saques_do_dia}")
     print(f"Depósitos realizados hoje: {numero_de_depositos_do_dia}")
     print("-" * 35 + "\n")
+    
+def novo_cliente(clientes):
+    #validar se cliente já existe
+    cpf = input("Digite o CPF do cliente: ")
+    for cliente in clientes:
+        if cliente["cpf"] == cpf: 
+            print("\nCliente já cadastrado!")
+            return clientes
+    
+    #continuar cadastro após validacao
+    nome = input("Digite o nome do cliente: ")
+    data_nascimento = input("Digite a data de nascimento do cliente: ")
+    endereco = input("Digite o endereço do cliente: ")
+    clientes.append({"cpf": cpf, "nome": nome, "data_nascimento": data_nascimento, "endereco": endereco})
+    return clientes
+    print("\nCliente cadastrado com sucesso!")
+    
+#def nova_conta():
+
+#def listar_contas():
+    
 
 def main ():
     saldo = 0
@@ -58,6 +79,7 @@ def main ():
     LIMITE_DE_SAQUE = 3
     numero_de_saques_do_dia = 0
     numero_de_depositos_do_dia = 0
+    clientes = []
 
     while True:
         opcao = menu()
@@ -72,10 +94,12 @@ def main ():
         elif opcao == '3':
             saldo, numero_de_saques_do_dia = realizar_saque(saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_SAQUE)
             
-    
         elif opcao == '4':
             extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia)    
     
+        elif opcao == '5':
+            clientes = novo_cliente(clientes)
+        
         elif opcao == '8':
             print("\nSaindo do sistema...")
             print("Obrigado por utilizar o Banco DIO!\n")
@@ -83,5 +107,6 @@ def main ():
     
         else:
             print("\nOpção inválida!")
+            print(clientes)
 
 main()
