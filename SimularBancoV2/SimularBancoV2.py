@@ -2,6 +2,7 @@
 #Autor: Alisson Oliveira
 #Descrição: Simular um sistema de banco com operações de saque, depósito e saldo. 
 #Versão: 2.0
+import random
 
 def menu(): 
     print("""
@@ -65,13 +66,25 @@ def novo_cliente(clientes):
     data_nascimento = input("Digite a data de nascimento do cliente: ")
     endereco = input("Digite o endereço do cliente: ")
     clientes.append({"cpf": cpf, "nome": nome, "data_nascimento": data_nascimento, "endereco": endereco})
-    return clientes
     print("\nCliente cadastrado com sucesso!")
+    return clientes
     
-#def nova_conta():
-
-#def listar_contas():
     
+def nova_conta(agencia, clientes):
+    cpf = input("Digite o CPF do cliente: ")
+    for cliente in clientes:
+        if cliente["cpf"] != cpf: 
+            print("\nCliente inexistente!")
+        elif cliente["cpf"] == cpf:
+            numero_conta = random.randint(1000, 9999)
+            conta = {"agencia": agencia, "numero_conta": numero_conta, "cliente": cliente["nome"]}
+            print(f"\nConta criada com sucesso!\nAgência: {agencia} | Número da conta: {numero_conta} | Cliente: {cliente['nome']}")
+            return conta    
+    
+def listar_contas(contas):
+    print("\n--------- Lista de contas: ---------")
+    for conta in contas:
+        print(f"Agência: {conta['agencia']} | Número da conta: {conta['numero_conta']} | Cliente: {conta['cliente']}")
 
 def main ():
     saldo = 0
@@ -80,7 +93,9 @@ def main ():
     numero_de_saques_do_dia = 0
     numero_de_depositos_do_dia = 0
     clientes = []
-
+    contas = []
+    AGENCIA = "0001"
+    
     while True:
         opcao = menu()
 
@@ -98,12 +113,26 @@ def main ():
             extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia)    
     
         elif opcao == '5':
-            clientes = novo_cliente(clientes)
+            novo_cliente(clientes)
+                        
+        elif opcao == '6':
+            conta = nova_conta(AGENCIA, clientes)
+            contas.append(conta)
+        
+        elif opcao == '7':
+            listar_contas(contas)
         
         elif opcao == '8':
             print("\nSaindo do sistema...")
             print("Obrigado por utilizar o Banco DIO!\n")
             break
+        
+        #Opção secreta para testes
+        elif opcao == "9":
+            print("\nClientes cadastrados: ")
+            print(clientes)
+            print("\nContas cadastradas: ")
+            print(contas)
     
         else:
             print("\nOpção inválida!")
