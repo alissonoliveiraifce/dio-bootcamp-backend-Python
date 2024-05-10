@@ -20,14 +20,14 @@ def menu():
 def consultar_saldo(saldo):
     print(f"\nSeu saldo é de R${saldo:.2f}")
     
-def realizar_deposito(saldo):
+def realizar_deposito(saldo, /):
     deposito = float(input("\nDigite o valor do depósito: R$"))
     saldo += deposito
     print(f"\nDepósito de R${deposito:.2f} efetuado com sucesso!")
     print(f"Saldo atual: R${saldo:.2f}")
     return saldo
 
-def realizar_saque(saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_SAQUE):
+def realizar_saque(*, saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_SAQUE):
     if numero_de_saques_do_dia >= LIMITE_DE_SAQUE:
         print("\nLimite de saques diários atingido!")
     elif numero_de_saques_do_dia <= LIMITE_DE_SAQUE:
@@ -44,7 +44,7 @@ def realizar_saque(saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_S
             print(f"Saldo atual: R${saldo:.2f}")
     return saldo, numero_de_saques_do_dia
 
-def extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia, contas):
+def extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, /, *, numero_de_saques_do_dia, numero_de_depositos_do_dia, contas):
     print("\n--------- Extrato bancário: ---------")
     print(f"Saldo: R${saldo:.2f}")
     print(f"Limite por saque: R${limite_por_saque:.2f}")
@@ -93,6 +93,7 @@ def listar_contas(contas):
     for conta in contas:
         print(f"Agência: {conta['agencia']} | Número da conta: {conta['numero_conta']} | Cliente: {conta['cliente']}")
 
+        
 def main ():
     saldo = 0
     limite_por_saque = 500
@@ -114,10 +115,10 @@ def main ():
             numero_de_depositos_do_dia += 1
     
         elif opcao == '3':
-            saldo, numero_de_saques_do_dia = realizar_saque(saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_SAQUE)
+            saldo, numero_de_saques_do_dia = realizar_saque(saldo=saldo, limite_por_saque=limite_por_saque, numero_de_saques_do_dia=numero_de_saques_do_dia, LIMITE_DE_SAQUE=LIMITE_DE_SAQUE)
             
         elif opcao == '4':
-            extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia, contas)    
+            extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia=numero_de_saques_do_dia, numero_de_depositos_do_dia=numero_de_depositos_do_dia, contas=contas)    
     
         elif opcao == '5':
             novo_cliente(clientes)
