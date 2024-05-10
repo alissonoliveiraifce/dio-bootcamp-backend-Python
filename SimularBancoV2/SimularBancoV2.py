@@ -44,7 +44,7 @@ def realizar_saque(saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_S
             print(f"Saldo atual: R${saldo:.2f}")
     return saldo, numero_de_saques_do_dia
 
-def extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia):
+def extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia, contas):
     print("\n--------- Extrato bancário: ---------")
     print(f"Saldo: R${saldo:.2f}")
     print(f"Limite por saque: R${limite_por_saque:.2f}")
@@ -72,14 +72,21 @@ def novo_cliente(clientes):
     
 def nova_conta(agencia, clientes):
     cpf = input("Digite o CPF do cliente: ")
+    validacao = False
     for cliente in clientes:
-        if cliente["cpf"] != cpf: 
-            print("\nCliente inexistente!")
-        elif cliente["cpf"] == cpf:
-            numero_conta = random.randint(1000, 9999)
-            conta = {"agencia": agencia, "numero_conta": numero_conta, "cliente": cliente["nome"]}
-            print(f"\nConta criada com sucesso!\nAgência: {agencia} | Número da conta: {numero_conta} | Cliente: {cliente['nome']}")
-            return conta    
+        if  cliente["cpf"] == cpf:
+            validacao = True
+            break
+            
+    if validacao: 
+        numero_conta = random.randint(1000, 9999)
+        conta = {"agencia": agencia, "numero_conta": numero_conta, "cliente": cliente["nome"]}
+        print(f"\nConta criada com sucesso!\nAgência: {agencia} | Número da conta: {numero_conta} | Cliente: {cliente['nome']}")
+        return conta
+    else:
+        return print("\nCliente inexistente!")
+            
+                
     
 def listar_contas(contas):
     print("\n--------- Lista de contas: ---------")
@@ -110,7 +117,7 @@ def main ():
             saldo, numero_de_saques_do_dia = realizar_saque(saldo, limite_por_saque, numero_de_saques_do_dia, LIMITE_DE_SAQUE)
             
         elif opcao == '4':
-            extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia)    
+            extrato_bancario(saldo, limite_por_saque, LIMITE_DE_SAQUE, numero_de_saques_do_dia, numero_de_depositos_do_dia, contas)    
     
         elif opcao == '5':
             novo_cliente(clientes)
